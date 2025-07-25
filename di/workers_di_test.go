@@ -4,19 +4,24 @@ import (
 	"testing"
 )
 
-// TestProvideWorkers tests the ProvideWorkers function
-func TestProvideWorkers(t *testing.T) {
-	workers := ProvideWorkers()
+// TestProvideEmailWorker tests the ProvideEmailWorker function
+func TestProvideEmailWorker(t *testing.T) {
+	emailWorker := ProvideEmailWorker()
 
-	// Test EmailWorker worker
-	emailResult := workers.EmailWorker.DoWork()
+	// Test EmailWorker
+	emailResult := emailWorker.DoWork()
 	if emailResult != "EmailWorker sent" {
-		t.Errorf("ProvideWorkers().EmailWorker.DoWork() = %s; want %s", emailResult, "EmailWorker sent")
+		t.Errorf("ProvideEmailWorker().DoWork() = %s; want %s", emailResult, "EmailWorker sent")
 	}
+}
 
-	// Test SMSWorker worker
-	smsResult := workers.SMSWorker.DoWork()
+// TestProvideSMSWorker tests the ProvideSMSWorker function
+func TestProvideSMSWorker(t *testing.T) {
+	smsWorker := ProvideSMSWorker()
+
+	// Test SMSWorker
+	smsResult := smsWorker.DoWork()
 	if smsResult != "SMSWorker sent" {
-		t.Errorf("ProvideWorkers().SMSWorker.DoWork() = %s; want %s", smsResult, "SMSWorker sent")
+		t.Errorf("ProvideSMSWorker().DoWork() = %s; want %s", smsResult, "SMSWorker sent")
 	}
 }

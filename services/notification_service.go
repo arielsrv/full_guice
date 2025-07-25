@@ -13,10 +13,10 @@ type NotificationService struct {
 }
 
 // NewNotificationService creates a new notification service with the provided workers
-func NewNotificationService(serviceIn di.NotificationServiceIn) *NotificationService {
+func NewNotificationService(params di.NotificationServiceParams) *NotificationService {
 	return &NotificationService{
-		emailWorker: serviceIn.Email,
-		smsWorker:   serviceIn.SMSWorker,
+		emailWorker: params.Email,
+		smsWorker:   params.SMSWorker,
 	}
 }
 
