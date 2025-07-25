@@ -13,15 +13,15 @@ type NotificationService struct {
 }
 
 // NewNotificationService creates a new notification service with the provided workers
-func NewNotificationService(params di.NotificationServiceParams) *NotificationService {
+func NewNotificationService(in di.NotificationServiceIn) *NotificationService {
 	return &NotificationService{
-		emailWorker: params.Email,
-		smsWorker:   params.SMSWorker,
+		emailWorker: in.EmailWorker,
+		smsWorker:   in.SMSWorker,
 	}
 }
 
 // NotifyAll sends notifications through all available channels
-func (n *NotificationService) NotifyAll() {
-	fmt.Println(n.emailWorker.DoWork())
-	fmt.Println(n.smsWorker.DoWork())
+func (r *NotificationService) NotifyAll() {
+	fmt.Println(r.emailWorker.DoWork())
+	fmt.Println(r.smsWorker.DoWork())
 }

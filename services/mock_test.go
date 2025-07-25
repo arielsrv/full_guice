@@ -34,9 +34,9 @@ func TestNotificationServiceWithMocks(t *testing.T) {
 	}
 
 	// Create input struct with mocks
-	in := di.NotificationServiceParams{
-		Email:     emailWorker,
-		SMSWorker: smsWorker,
+	in := di.NotificationServiceIn{
+		EmailWorker: emailWorker,
+		SMSWorker:   smsWorker,
 	}
 
 	// Create service

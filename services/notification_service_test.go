@@ -17,9 +17,9 @@ func TestNewNotificationService(t *testing.T) {
 	smsWorker := &workers.SMSWorker{}
 
 	// Create input struct
-	in := di.NotificationServiceParams{
-		Email:     emailWorker,
-		SMSWorker: smsWorker,
+	in := di.NotificationServiceIn{
+		EmailWorker: emailWorker,
+		SMSWorker:   smsWorker,
 	}
 
 	// Create service
@@ -42,9 +42,9 @@ func TestNotificationServiceNotifyAll(t *testing.T) {
 	smsWorker := &workers.SMSWorker{}
 
 	// Create input struct
-	in := di.NotificationServiceParams{
-		Email:     emailWorker,
-		SMSWorker: smsWorker,
+	in := di.NotificationServiceIn{
+		EmailWorker: emailWorker,
+		SMSWorker:   smsWorker,
 	}
 
 	// Create service

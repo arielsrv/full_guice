@@ -49,12 +49,12 @@ func Visualize(c *Container, w io.Writer) error {
 	return dig.Visualize(c.container, w)
 }
 
-// NotificationServiceParams is an input struct for consuming workers with named values
-type NotificationServiceParams struct {
+// NotificationServiceIn is an input struct for consuming workers with named values
+type NotificationServiceIn struct {
 	In
 
-	Email     workers.Worker `name:"email_worker"`
-	SMSWorker workers.Worker `name:"sms_worker"`
+	EmailWorker workers.Worker `name:"email_worker"`
+	SMSWorker   workers.Worker `name:"sms_worker"`
 }
 
 // ProvideEmailWorker creates and provides an email worker implementation
