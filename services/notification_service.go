@@ -2,6 +2,7 @@ package services
 
 import (
 	"fmt"
+	"slices"
 	"sync"
 
 	"awesomeProject19/workers"
@@ -25,8 +26,7 @@ func NewNotificationService(params NotificationServiceParams) *NotificationServi
 // NotifyAll sends notifications through all available channels.
 func (r *NotificationService) NotifyAll() {
 	var wg sync.WaitGroup
-	for i := range r.workers {
-		worker := r.workers[i]
+	for worker := range slices.Values(r.workers) {
 		wg.Go(func() {
 			fmt.Println(worker.DoWork())
 		})
