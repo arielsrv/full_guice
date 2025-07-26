@@ -1,0 +1,12 @@
+all: true
+dir: mocks/{{.InterfaceDirRelative}}
+log-level: Warn
+filename: "mock_{{.InterfaceName}}.go"
+template: testify
+template-data:
+  unroll-variadic: True
+force-file-write: True
+packages:
+  awesomeProject19:
+    config:
+      recursive: true

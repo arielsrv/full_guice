@@ -1,0 +1,8 @@
+# yaml-language-server: $schema=https://json.schemastore.org/taskfile.json
+version: '3'
+
+vars:
+  test:mock:
+    desc: Create mocks
+    cmds:
+      - go tool mockery
