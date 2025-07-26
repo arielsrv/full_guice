@@ -29,7 +29,7 @@ func (r *Container) Provide(constructor interface{}, opts ...ProvideOption) {
 
 // Invoke passes through to the underlying container's Invoke method.
 func (r *Container) Invoke(function interface{}) error {
-	return r.container.Invoke(function, dig.FillInvokeInfo(nil))
+	return r.container.Invoke(function)
 }
 
 func Named(name string) ProvideOption {
