@@ -60,7 +60,7 @@ func TestContainer_Invoke_Error(t *testing.T) {
 	container := New()
 
 	// Act
-	err := container.Invoke(func(s string) {
+	err := container.Invoke(func(_ string) {
 		// This function requires a string dependency that hasn't been provided
 	})
 
@@ -81,8 +81,10 @@ func TestNamed(t *testing.T) {
 	var result string
 	err := container.Invoke(func(in struct {
 		In
+
 		Value string `name:"test_name"`
-	}) {
+	},
+	) {
 		result = in.Value
 	})
 
