@@ -25,13 +25,11 @@ func NewNotificationService(params NotificationServiceParams) *NotificationServi
 // NotifyAll sends notifications through all available channels.
 func (r *NotificationService) NotifyAll() {
 	var wg sync.WaitGroup
-	wg.Add(len(r.workers))
 	for i := range r.workers {
 		worker := r.workers[i]
-		go func() {
-			defer wg.Done()
+		wg.Go(func() {
 			fmt.Println(worker.DoWork())
-		}()
+		})
 	}
 	wg.Wait()
 }
