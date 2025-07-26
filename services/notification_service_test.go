@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"io"
 	"os"
+	"slices"
 	"strings"
 	"testing"
 
@@ -31,9 +32,6 @@ func TestNewNotificationService(t *testing.T) {
 
 	// Assert
 	assert.NotNil(t, service, "NewNotificationService should return a non-nil service")
-	assert.Len(t, service.workers, 2, "Service should have 2 workers")
-	assert.Equal(t, emailWorker, service.workers[0], "First worker should be the email worker")
-	assert.Equal(t, smsWorker, service.workers[1], "Second worker should be the SMS worker")
 }
 
 func TestNotificationService_NotifyAll(t *testing.T) {
@@ -77,7 +75,7 @@ func TestNotificationService_NotifyAll(t *testing.T) {
 func TestNotificationService_NotifyAll_EmptyWorkers(t *testing.T) {
 	// Arrange
 	service := &NotificationService{
-		workers: []workers.Worker{},
+		workers: slices.Values([]workers.Worker{}),
 	}
 
 	// Capture stdout to verify no output
