@@ -1,27 +1,37 @@
 package services
 
 import (
-	"awesomeProject19/di"
-	"awesomeProject19/workers"
 	"fmt"
+	"sync"
+
+	"awesomeProject19/workers"
 )
 
-// NotificationService Servicio principal
+// NotificationService Servicio principal.
 type NotificationService struct {
-	emailWorker workers.Worker
-	smsWorker   workers.Worker
+	workers []workers.Worker
 }
 
-// NewNotificationService creates a new notification service with the provided workers
-func NewNotificationService(in di.NotificationServiceIn) *NotificationService {
+// NewNotificationService creates a new notification service with the provided workers.
+func NewNotificationService(params NotificationServiceParams) *NotificationService {
 	return &NotificationService{
-		emailWorker: in.EmailWorker,
-		smsWorker:   in.SMSWorker,
+		workers: []workers.Worker{
+			params.EmailWorker,
+			params.SMSWorker,
+		},
 	}
 }
 
-// NotifyAll sends notifications through all available channels
+// NotifyAll sends notifications through all available channels.
 func (r *NotificationService) NotifyAll() {
-	fmt.Println(r.emailWorker.DoWork())
-	fmt.Println(r.smsWorker.DoWork())
+	var wg sync.WaitGroup
+	wg.Add(len(r.workers))
+	for i := range r.workers {
+		worker := r.workers[i]
+		go func() {
+			defer wg.Done()
+			fmt.Println(worker.DoWork())
+		}()
+	}
+	wg.Wait()
 }

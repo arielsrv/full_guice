@@ -1,14 +1,14 @@
 package workers
 
-// SMSWorker implements the Worker interface for SMSWorker notifications
+// SMSWorker implements the Worker interface for SMSWorker notifications.
 type SMSWorker struct{}
 
-// NewSMSWorker creates a new instance of SMSWorker
-func NewSMSWorker() Worker {
+// NewSMSWorker creates a new instance of SMSWorker.
+func NewSMSWorker() *SMSWorker {
 	return &SMSWorker{}
 }
 
-// DoWork sends an SMSWorker notification and returns a status message
+// DoWork sends an SMSWorker notification and returns a status message.
 func (r *SMSWorker) DoWork() string {
 	return "SMSWorker sent"
 }

@@ -3,14 +3,16 @@ package main
 import (
 	"awesomeProject19/di"
 	"awesomeProject19/services"
+	"awesomeProject19/workers"
 )
 
 func main() {
 	container := di.New()
 
 	// Proveer implementaciones
-	container.Provide(di.ProvideEmailWorker, di.Named("email_worker"))
-	container.Provide(di.ProvideSMSWorker, di.Named("sms_worker"))
+	container.Provide(func() workers.Worker { return workers.NewEmailWorker() }, di.Named("email_worker"))
+	container.Provide(func() workers.Worker { return workers.NewSMSWorker() }, di.Named("sms_worker"))
+
 	container.Provide(services.NewNotificationService)
 
 	// Ejecutar
