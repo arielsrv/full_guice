@@ -7,19 +7,12 @@ import (
 )
 
 func main() {
-	container := di.New()
-
 	// Proveer implementaciones
-	container.Provide(func() workers.Worker { return workers.NewEmailWorker() }, di.Named("email_worker"))
-	container.Provide(func() workers.Worker { return workers.NewSMSWorker() }, di.Named("sms_worker"))
+	di.Container.Provide(func() workers.Worker { return workers.NewEmailWorker() }, di.Named("email_worker"))
+	di.Container.Provide(func() workers.Worker { return workers.NewSMSWorker() }, di.Named("sms_worker"))
+	di.Container.Provide(services.NewNotificationService, di.As(new(services.INotificationService)))
 
-	container.Provide(services.NewNotificationService)
-
-	// Ejecutar
-	err := container.Invoke(func(service *services.NotificationService) {
-		service.NotifyAll()
-	})
-	if err != nil {
-		panic(err)
-	}
+	// Ejecutar usando la nueva API genérica
+	notificationService := di.GetInstance[services.INotificationService]()
+	notificationService.NotifyAll()
 }

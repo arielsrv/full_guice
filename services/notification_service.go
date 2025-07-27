@@ -9,6 +9,10 @@ import (
 	"awesomeProject19/workers"
 )
 
+type INotificationService interface {
+	NotifyAll()
+}
+
 // NotificationService Servicio principal.
 type NotificationService struct {
 	workers iter.Seq[workers.Worker]
@@ -28,9 +32,11 @@ func NewNotificationService(params NotificationServiceParams) *NotificationServi
 func (r *NotificationService) NotifyAll() {
 	var wg sync.WaitGroup
 	for worker := range r.workers {
-		wg.Go(func() {
-			fmt.Println(worker.DoWork())
-		})
+		wg.Add(1)
+		go func(w workers.Worker) {
+			defer wg.Done()
+			fmt.Println(w.DoWork())
+		}(worker)
 	}
 	wg.Wait()
 }

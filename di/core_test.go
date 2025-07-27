@@ -23,7 +23,7 @@ func TestContainer_Provide(t *testing.T) {
 	// Act & Assert (no panic)
 	assert.NotPanics(t, func() {
 		container.Provide(func() string { return "test" })
-	}, "Provide should not panic with valid constructor")
+	}, "Register should not panic with valid constructor")
 }
 
 func TestContainer_Provide_Panic(t *testing.T) {
@@ -35,7 +35,7 @@ func TestContainer_Provide_Panic(t *testing.T) {
 		// Providing the same dependency twice causes a panic
 		container.Provide(func() string { return "test" })
 		container.Provide(func() string { return "test" })
-	}, "Provide should panic when there's an error")
+	}, "Register should panic when there's an error")
 }
 
 func TestContainer_Invoke(t *testing.T) {
@@ -90,4 +90,56 @@ func TestNamed(t *testing.T) {
 
 	require.NoError(t, err, "Invoke should not return an error")
 	assert.Equal(t, "test", result, "Named dependency should be retrievable")
+}
+
+func TestGet(t *testing.T) {
+	// Arrange
+	Reset() // Reset global container
+	testValue := "test value"
+	Container.Provide(func() string { return testValue })
+
+	// Act
+	result := GetInstance[string]()
+
+	// Assert
+	assert.Equal(t, testValue, result, "GetInstance should return the provided dependency")
+}
+
+func TestGet_Panic(t *testing.T) {
+	// Arrange
+	Reset() // Reset global container to ensure no dependencies
+
+	// Act & Assert (should panic)
+	assert.Panics(t, func() {
+		GetInstance[string]() // No string dependency provided
+	}, "GetInstance should panic when dependency is missing")
+}
+
+func TestGet_ComplexType(t *testing.T) {
+	// Arrange
+	type TestStruct struct {
+		Value string
+	}
+
+	Reset() // Reset global container
+	testStruct := &TestStruct{Value: "complex test"}
+	Container.Provide(func() *TestStruct { return testStruct })
+
+	// Act
+	result := GetInstance[*TestStruct]()
+
+	// Assert
+	assert.Equal(t, testStruct, result, "GetInstance should work with complex types")
+	assert.Equal(t, "complex test", result.Value, "GetInstance should preserve struct values")
+}
+
+func TestGetNamed_NotImplemented(t *testing.T) {
+	// Arrange
+	container := New()
+	container.Provide(func() string { return "test" }, Named("test_name"))
+
+	// Act & Assert (should panic with specific message)
+	assert.PanicsWithValue(t, "GetNamed is not yet implemented. Use specific getter functions for named dependencies or regular GetInstance[T]() for non-named ones.", func() {
+		GetNamed[string](container, "test_name")
+	}, "GetNamed should panic with not implemented message")
 }

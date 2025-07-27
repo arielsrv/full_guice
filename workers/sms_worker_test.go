@@ -1,23 +1,25 @@
-package workers
+package workers_test
 
 import (
 	"testing"
+
+	"awesomeProject19/workers"
 
 	"github.com/stretchr/testify/assert"
 )
 
 func TestNewSMSWorker(t *testing.T) {
 	// Act
-	worker := NewSMSWorker()
+	worker := workers.NewSMSWorker()
 
 	// Assert
 	assert.NotNil(t, worker, "NewSMSWorker should return a non-nil worker")
-	assert.IsType(t, &SMSWorker{}, worker, "NewSMSWorker should return an SMSWorker instance")
+	assert.IsType(t, &workers.SMSWorker{}, worker, "NewSMSWorker should return an SMSWorker instance")
 }
 
 func TestSMSWorker_DoWork(t *testing.T) {
 	// Arrange
-	worker := NewSMSWorker()
+	worker := workers.NewSMSWorker()
 
 	// Act
 	result := worker.DoWork()
